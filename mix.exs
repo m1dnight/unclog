@@ -5,7 +5,7 @@ defmodule Unclog.MixProject do
     [
       app: :unclog,
       version: "0.1.0",
-      elixir: "~> 1.19-dev",
+      elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
       description: description(),
       deps: deps(),
