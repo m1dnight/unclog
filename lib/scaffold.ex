@@ -24,7 +24,6 @@ defmodule Unclog.Scaffold do
     preamble_content = "# Changelog"
 
     with :ok <- File.mkdir(path),
-         :ok <- File.touch(preamble_path),
          :ok <- File.write(preamble_path, preamble_content) do
       :ok
     else
@@ -65,7 +64,6 @@ defmodule Unclog.Scaffold do
 
     with :ok <- File.mkdir(release_path),
          # create summary file and initial content
-         :ok <- File.touch(Path.join(release_path, "summary.md")),
          :ok <- File.write(Path.join(release_path, "summary.md"), summary_content),
          # create breaking changes files
          :ok <- File.mkdir(breaking_path),
