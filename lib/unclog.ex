@@ -38,9 +38,42 @@ defmodule Unclog do
   @spec write_changelog() :: :ok | {:error, :failed_to_write_changelog}
   def write_changelog do
     Unclog.changelogs(".changelogs")
+    |> Unclog.prune_empty_topics()
     |> Unclog.generate_template()
     |> Enum.join("\n")
     |> Unclog.write_changelog()
+  end
+
+  @doc """
+  Removes subtopics whose logs (and all descendant logs) are blank, so that
+  empty scaffolding directories don't render as orphan headers.
+
+  The root map is always kept, even if everything under it prunes away.
+  """
+  @spec prune_empty_topics(map()) :: map()
+  def prune_empty_topics(map) do
+    case do_prune(map) do
+      :empty -> %{:__logs__ => []}
+      pruned -> pruned
+    end
+  end
+
+  defp do_prune(map) do
+    {logs, subtopics} = Map.pop(map, :__logs__, [])
+
+    pruned_subtopics =
+      subtopics
+      |> Enum.map(fn {k, v} -> {k, do_prune(v)} end)
+      |> Enum.reject(fn {_k, v} -> v == :empty end)
+      |> Map.new()
+
+    has_logs? = Enum.any?(logs, &(String.trim(&1) != ""))
+
+    if has_logs? or map_size(pruned_subtopics) > 0 do
+      Map.put(pruned_subtopics, :__logs__, logs)
+    else
+      :empty
+    end
   end
 
   @doc """
