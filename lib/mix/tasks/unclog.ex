@@ -8,11 +8,30 @@ defmodule Mix.Tasks.Unclog do
 
   @impl Mix.Task
   def run(args) do
-    args
-    |> parse_args()
-    |> init_scaffolding()
-    |> make_release()
-    |> generate_changelog()
+    opts = parse_args(args)
+
+    if no_action?(opts) do
+      Mix.shell().info(usage())
+    else
+      opts
+      |> init_scaffolding()
+      |> make_release()
+      |> generate_changelog()
+    end
+  end
+
+  defp no_action?(opts) do
+    not opts[:init] and not opts[:generate] and not Keyword.has_key?(opts, :create)
+  end
+
+  defp usage do
+    """
+    Usage: mix unclog [--init] [--create NAME] [--generate]
+
+      --init            Create the .changelogs scaffolding directory.
+      --create NAME     Scaffold a new release section under .changelogs/NAME.
+      --generate        Render .changelogs into CHANGELOG.md.
+    """
   end
 
   @doc """
