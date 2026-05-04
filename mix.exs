@@ -9,6 +9,7 @@ defmodule Unclog.MixProject do
       start_permanent: Mix.env() == :prod,
       description: description(),
       deps: deps(),
+      dialyzer: dialyzer(),
       package: package(),
       # Docs
       name: "Unclog",
@@ -32,6 +33,10 @@ defmodule Unclog.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.34", only: :dev, runtime: false}
     ]
+  end
+
+  defp dialyzer do
+    [plt_add_apps: [:mix]]
   end
 
   defp docs do
