@@ -23,13 +23,17 @@ defmodule Unclog.Scaffold do
     # default content
     preamble_content = "# Changelog"
 
-    with :ok <- File.mkdir(path),
-         :ok <- File.write(preamble_path, preamble_content) do
+    with :ok <- File.mkdir_p(path),
+         :ok <- write_if_missing(preamble_path, preamble_content) do
       :ok
     else
       {:error, _} ->
         {:error, :failed_to_create_scaffold}
     end
+  end
+
+  defp write_if_missing(path, content) do
+    if File.exists?(path), do: :ok, else: File.write(path, content)
   end
 
   @doc """
