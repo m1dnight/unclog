@@ -15,7 +15,7 @@ defmodule Unclog.Scaffold do
   """
   @spec init() :: :ok | {:error, :failed_to_create_scaffold}
   def init do
-    path = ".changelogs"
+    path = Application.get_env(:unclog, :root, ".changelogs")
 
     # default paths
     preamble_path = Path.join(path, "preamble.md")

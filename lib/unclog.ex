@@ -37,12 +37,15 @@ defmodule Unclog do
   """
   @spec write_changelog() :: :ok | {:error, :failed_to_write_changelog}
   def write_changelog do
-    Unclog.changelogs(".changelogs")
+    Unclog.changelogs(root_path())
     |> Unclog.prune_empty_topics()
     |> Unclog.generate_template()
     |> Enum.join("\n")
     |> Unclog.write_changelog()
   end
+
+  defp root_path, do: Application.get_env(:unclog, :root, ".changelogs")
+  defp output_path, do: Application.get_env(:unclog, :output, "CHANGELOG.md")
 
   @doc """
   Removes subtopics whose logs (and all descendant logs) are blank, so that
@@ -186,7 +189,7 @@ defmodule Unclog do
   """
   @spec write_changelog(String.t()) :: :ok | {:error, :failed_to_write_changelog}
   def write_changelog(content) do
-    case File.write("CHANGELOG.md", content) do
+    case File.write(output_path(), content) do
       :ok ->
         :ok
 
