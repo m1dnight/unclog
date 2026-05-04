@@ -61,7 +61,7 @@ defmodule Unclog.Scaffold do
     bugfix_path = Path.join(release_path, "bug-fixes")
 
     # default content
-    summary_content = summary_content = Calendar.strftime(DateTime.utc_now(), "%A, %B %d, %Y")
+    summary_content = Calendar.strftime(DateTime.utc_now(), "%A, %B %d, %Y")
 
     with :ok <- File.mkdir(release_path),
          # create summary file and initial content
