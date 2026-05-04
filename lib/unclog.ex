@@ -195,7 +195,7 @@ defmodule Unclog do
   @doc """
   Writes the content of the markdown file to disk.
   """
-  @spec pretty_topic(String.t()) :: :ok | {:error, :failed_to_write_changelog}
+  @spec write_changelog(String.t()) :: :ok | {:error, :failed_to_write_changelog}
   def write_changelog(content) do
     case File.write("CHANGELOG.md", content) do
       :ok ->
