@@ -143,20 +143,9 @@ defmodule Unclog do
     # ensure these topics all exist in the acc
     dict =
       Enum.reduce(topic_prefixes, dict, fn topics, acc ->
-        # we can rest assured that all prefixes are present in the map
-        # so we only have to add the last one
         case get_in(acc, topics) do
-          nil ->
-            if Enum.count(topics) == 1 do
-              put_in(acc, topics, %{:__logs__ => []})
-            else
-              {prefix, [suffix]} = Enum.split(topics, -1)
-              put_in(acc, topics, %{:__logs__ => []})
-              update_in(acc, prefix, &Map.put(&1, suffix, %{:__logs__ => []}))
-            end
-
-          _ ->
-            acc
+          nil -> put_in(acc, topics, %{:__logs__ => []})
+          _ -> acc
         end
       end)
 
