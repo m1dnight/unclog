@@ -9,6 +9,7 @@ defmodule Unclog.MixProject do
       start_permanent: Mix.env() == :prod,
       description: description(),
       deps: deps(),
+      aliases: aliases(),
       dialyzer: dialyzer(),
       package: package(),
       # Docs
@@ -60,6 +61,31 @@ defmodule Unclog.MixProject do
                 CHANGELOG*),
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/m1dnight/unclog"}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      precommit: [
+        "compile --warning-as-errors",
+        "deps.unlock --unused",
+        "format",
+        "test",
+        "dialyzer",
+        "credo --strict"
+      ]
+    ]
+  end
+
+  def cli do
+    [
+      preferred_envs: [precommit: :test]
     ]
   end
 end
