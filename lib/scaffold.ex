@@ -17,7 +17,7 @@ defmodule Unclog.Scaffold do
   def init do
     path = ".changelogs"
 
-    # default pahts
+    # default paths
     preamble_path = Path.join(path, "preamble.md")
 
     # default content
